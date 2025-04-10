@@ -1,16 +1,12 @@
 trigger:
   branches:
     include:
-      - main  # or 'master' based on your repo
+      - main  # or 'master'
 
 pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: GitHubCheckout@1  # Optional: if using GitHub, or use built-in 'checkout'
-  inputs:
-    repository: self
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -18,7 +14,7 @@ steps:
     options: '-X'
     mavenOptions: '-Xmx1024m'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'  # or '17' based on your setup
+    jdkVersionOption: '1.11'  # or '17' if you're using a newer version
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
 
