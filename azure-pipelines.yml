@@ -1,25 +1,16 @@
 trigger:
-  branches:
-    include:
-      - main  # or 'master'
+- main  # Or replace with your actual branch
 
 pool:
-  vmImage: 'windows-latest'
+  name: NARESH  # Name of your self-hosted agent pool
 
 steps:
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean test'
-    options: '-X'
-    mavenOptions: '-Xmx1024m'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'  # or '17' if you're using a newer version
+    jdkVersionOption: '1.11'
+    mavenVersionOption: 'Default'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    testRunTitle: 'Selenium Test Results'
-    mergeTestResults: true
