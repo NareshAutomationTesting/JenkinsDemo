@@ -1,27 +1,28 @@
 trigger:
-- main  # or your branch name
+- main  # Change as per your branch
 
 pool:
   name: NARESH  # Your self-hosted agent pool name
 
 steps:
 
-- script: |
+- powershell: |
+    Write-Host "Checking Java Version..."
     java -version
-    echo JAVA_HOME is $JAVA_HOME
-  displayName: 'Check Java Version'
+    Write-Host "JAVA_HOME: $env:JAVA_HOME"
+  displayName: 'Show Java Version'
 
-- script: |
+- powershell: |
+    Write-Host "Checking Maven Version..."
     mvn -version
-    echo MAVEN_HOME is $MAVEN_HOME
-  displayName: 'Check Maven Version'
+    Write-Host "MAVEN_HOME: $env:MAVEN_HOME"
+  displayName: 'Show Maven Version'
 
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean test'
+    javaHomeOption: 'Path'
+    jdkDirectory: '$(JAVA_HOME)'
     mavenOptions: '-Xmx1024m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
   displayName: 'Run Maven Tests'
