@@ -1,16 +1,16 @@
 trigger:
-- main  # Or replace with your actual branch
+- master  # or your branch name
 
 pool:
-  name: NARESH  # Name of your self-hosted agent pool
+  name: NARESH
+  demands: []  # Removed tool demands like 'maven'
 
 steps:
-- task: Maven@3
+- task: JavaToolInstaller@0
   inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'clean test'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    mavenVersionOption: 'Default'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    versionSpec: '11'
+    jdkArchitecture: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- script: mvn clean test
+  displayName: 'Run Maven Tests'
