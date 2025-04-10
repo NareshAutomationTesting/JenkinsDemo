@@ -1,19 +1,27 @@
 trigger:
-- master  # Change this to your branch name if different
+- main  # or your branch name
 
 pool:
-  name: 'NARESH'  # Your self-hosted agent pool name
+  name: NARESH  # Your self-hosted agent pool name
 
 steps:
-- script: |
-    echo "✅ Verifying Java and Maven installation..."
-    echo JAVA_HOME=%JAVA_HOME%
-    echo MAVEN_HOME=%MAVEN_HOME%
-    java -version
-    mvn -version
-  displayName: 'Verify Java & Maven Environment'
 
 - script: |
-    echo "🔧 Running Maven Clean Install..."
-    mvn clean install
-  displayName: 'Build Selenium Project'
+    java -version
+    echo JAVA_HOME is $JAVA_HOME
+  displayName: 'Check Java Version'
+
+- script: |
+    mvn -version
+    echo MAVEN_HOME is $MAVEN_HOME
+  displayName: 'Check Maven Version'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean test'
+    mavenOptions: '-Xmx1024m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    jdkArchitectureOption: 'x64'
+  displayName: 'Run Maven Tests'
