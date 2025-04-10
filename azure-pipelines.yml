@@ -10,3 +10,10 @@ steps:
       mavenPomFile: 'pom.xml'
       goals: 'clean test'
       publishJUnitResults: true
+      
+- script: |
+    echo JAVA_HOME=%JAVA_HOME%
+    echo MAVEN_HOME=%MAVEN_HOME%
+    java -version
+    mvn -version
+  displayName: 'Verify Java & Maven Setup'
