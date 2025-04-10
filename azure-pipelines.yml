@@ -1,16 +1,12 @@
-trigger:
-- master  # or your branch name
-
 pool:
   name: NARESH
-  demands: []  # Removed tool demands like 'maven'
+
+trigger:
+  - main
 
 steps:
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '11'
-    jdkArchitecture: 'x64'
-    jdkSourceOption: 'PreInstalled'
-
-- script: mvn clean test
-  displayName: 'Run Maven Tests'
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean test'
+      publishJUnitResults: true
