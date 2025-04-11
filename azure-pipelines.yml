@@ -2,14 +2,21 @@ trigger:
 - main
 
 pool:
-  name: NARESH
+  name: NARESH  # Make sure your self-hosted agent pool is correct
 
-steps:
-- script: java -version
-  displayName: 'Check Java Version'
+variables:
+  JAVA_HOME: 'C:\Program Files\Java\jdk-21'
+  MAVEN_HOME: 'C:\apache-maven-3.9.6'
+  PATH: '$(JAVA_HOME)\bin;$(MAVEN_HOME)\bin;$(PATH)'
 
-- script: mvn -version
-  displayName: 'Check Maven Version'
+jobs:
+- job: Build
+  steps:
+  - script: java -version
+    displayName: 'Check Java Version'
 
-- script: mvn clean test
-  displayName: 'Run Selenium Tests'
+  - script: mvn -version
+    displayName: 'Check Maven Version'
+
+  - script: mvn clean test
+    displayName: 'Run Maven Tests'
